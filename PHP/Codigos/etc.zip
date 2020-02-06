@@ -1,0 +1,59 @@
+<font size="1" face="verdana">Please visit our sponsor</font><br><iframe src="http://ads.exhedra.com/ads/ShowAd.Asp?lngSlotId=15&lngWId=8&blnSupressOutput=False&strBgColor=white&vstrUniquePageId=20021111015535342829&blnJScriptInclude=False" marginwidth=0 marginheight=0 width=340 height=300 bgcolor="white" hspace=0 vspace=0 frameborder=0 scrolling=no></iframe><xmp>
+    //**************************************
+    // Name: etc.passwd.inc
+    // Description:Authentication function that checks a user/pass against /etc/passwd by Michael Matsumura
+    // By: PHP Code Exchange
+    //
+    //
+    // Inputs:None
+    //
+    // Returns:None
+    //
+    //Assumes:None
+    //
+    //Side Effects:None
+    //**************************************
+    
+    <?
+    /*
+    * etc.passwd.inc v1.0
+    *
+    * Syntax:
+    *verifypasswd(string USERNAME, string PASSWORD)
+    *
+    * The function will return one of three values:
+    *-2 if there was a file reading error
+    *-1 if the password is incorrect
+    * 0 if the username doesn't exist
+    * 1 if the password is correct
+    *
+    * Written by WarMage (michael@irc.net)
+    *
+    */
+    function verifypasswd ($USERNAME, $PASSWORD) {
+    $fd = fopen("/etc/passwd", "r");
+    $contents = fread($fd, filesize("/etc/passwd"));
+    fclose($fd);
+    if (!$contents) return -2;
+    $lines = split("\n", $contents);
+    $passwd = array();
+    for($count=0;$count<count($lines);$count++) {
+    list ($user,$pass) = split(":",$lines[$count]);
+    if ($user == $USERNAME) {
+    break;
+    }
+    }
+    if (!$user) return 0;
+    $cryptedpass = $pass;
+    $salt = substr($cryptedpass,0,2);
+    $Pass = crypt($PASSWORD,$salt);
+    if ($Pass == $cryptedpass) {
+    return 1;
+    } else {
+    return -1;
+    }
+    }
+    ?>
+
+		</xmp>
+		

@@ -1,0 +1,36 @@
+<html>
+
+<body>
+
+<style>
+.bgimages img {cursor:hand}
+</style>
+<script language="JavaScript1.2">
+<!--
+
+/*
+Live Background Previewer Script- 
+© Dynamic Drive (www.dynamicdrive.com)
+For full source code, installation instructions,
+100's more DHTML scripts, and Terms Of
+Use, visit dynamicdrive.com
+*/
+
+function tile(){
+if (!document.all)
+return
+var source=event.srcElement
+if (source.tagName=="IMG")
+document.body.style.backgroundImage="url("+source.src+")"
+}
+
+function restore(){
+document.body.style.backgroundImage=''
+}
+document.body.onclick=restore
+//-->
+</script>
+
+<span class="bgimages" onClick="tile();event.cancelBubble=true"><img src="backgr10.jpg"><img src="backgr11.jpg"><br><img src="backgr13.jpg"><img src="backgr14.jpg"></span>
+</body>
+</html>

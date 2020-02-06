@@ -1,0 +1,154 @@
+Source Code : Download Upload Statistics Manager 
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import java.io.*;
+import java.util.*;
+
+public class UDStats extends JPanel implements ActionListener
+{
+    private JLabel rs,l1,l2;
+    private JMenuBar menubar;
+    private JTextField inud;
+    private static JProgressBar pb,pb2;
+    public static JFrame frame;
+    public static int addbytes, totalbytes, mth, date;
+    static BufferedReader ff;
+    static PrintWriter tfs;
+    static PrintWriter tf;
+    static Calendar c;
+    static String cpath;
+
+    public UDStats() 
+    {
+        c=Calendar.getInstance();
+        mth=c.get(Calendar.MONTH)+1;
+        date=c.get(Calendar.DATE);
+        
+         JMenu fileMenu = new JMenu ("File");
+        JMenuItem exitItem = new JMenuItem ("Exit");
+        fileMenu.add (exitItem);
+        exitItem.addActionListener(new exitud());
+
+        rs = new JLabel ("Received \\ Send");
+        l1 = new JLabel ("Max = 400MB");
+        l2 = new JLabel ("Max = 1000MB");
+        menubar = new JMenuBar();
+        menubar.add (fileMenu);
+        inud = new JTextField (5);
+        inud.addActionListener(this);
+        pb=new JProgressBar(0, 419430400);
+        pb2=new JProgressBar(0, 1048576000);
+        pb.setValue(0);
+        pb2.setValue(0);
+          pb.setStringPainted(true);
+          pb2.setStringPainted(true);
+          //pb.setValue(task.getCurrent());
+
+        setPreferredSize (new Dimension (372, 251));
+        setLayout (null);
+
+        add (rs);
+        add (l1);
+        add (l2);
+        add (menubar);
+        add (inud);
+        add (pb);
+        add (pb2);
+
+        //set component bounds (only needed by Absolute Positioning)
+        rs.setBounds (45, 30, 90, 25);
+        menubar.setBounds (0, 0, 375, 20);
+        inud.setBounds (45, 55, 235, 25);
+        pb.setBounds(20, 100 , 350, 30);
+        l1.setBounds(175, 135, 75, 25);
+        pb2.setBounds(20, 170, 350, 30);
+        l2.setBounds(175, 205, 75, 25);
+    }
+
+
+    public static void main (String[] args) throws IOException
+    {
+        cpath=System.getProperty("java.class.path");
+        frame= new JFrame ("UpLoad Download Statistics Manager");
+        try {UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());}
+        catch(Exception e) {}
+        
+         StringBuffer icopath1=new StringBuffer(cpath);
+        for(int a=0; a<icopath1.length(); a++)
+               if(icopath1.charAt(a)==92)
+                    icopath1.setCharAt(a, '/');
+          String icopath=icopath1.toString()+"/ud.gif";
+          frame.setIconImage((new ImageIcon(icopath)).getImage());
+
+        frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add (new UDStats());
+        frame.pack();
+        frame.setVisible (true);
+        
+        ff=new BufferedReader(new FileReader(cpath+"\\totalb"+Integer.toString(mth)+".txt"));
+        tfs=new PrintWriter(new BufferedWriter(new FileWriter(cpath+"\\stats"+Integer.toString(mth)+".txt", true)));
+        totalbytes=Integer.parseInt(ff.readLine());
+        tf=new PrintWriter(new BufferedWriter(new FileWriter(cpath+"\\totalb"+Integer.toString(mth)+".txt", false)));
+        pb.setValue(totalbytes);
+        //pb.getPercentComplete();
+        pb.setString(pprint(totalbytes, 4));
+        pb2.setValue(totalbytes);
+        //pb2.getPercentComplete();
+        pb2.setString(pprint(totalbytes, 10));
+    }
+            
+    public void actionPerformed(ActionEvent e)
+    {
+         addbytes=Integer.parseInt(inud.getText());
+         inud.selectAll();
+         totalbytes+=addbytes;
+         try 
+         { 
+              tfs.println(date+"     "+addbytes);
+              tfs.flush();
+         }
+         catch(Exception e2) {}
+         addbytes=0;
+         pb.setValue(totalbytes);
+         //pb.getPercentComplete();
+         pb.setString(pprint(totalbytes, 4));
+         pb2.setValue(totalbytes);
+         pb2.setString(pprint(totalbytes, 10));
+         //pb2.getPercentComplete();
+    }
+    
+    static String pprint(int b, int s)
+    {
+         String temp, progr;
+         int t=b/1048576;
+         double eb=0d;
+         progr=Integer.toString(t);
+         temp=progr+"MB  ";
+         progr=Integer.toString(t/s);
+         temp=temp+progr+"% ";
+         eb=(t-400)*1.4;
+         if(t>400)
+              temp=temp+"ExtraBill=Rs."+Double.toString(eb);
+         else
+              temp=temp+"";
+         return(temp);
+    }
+         
+}
+
+class exitud extends JPanel implements ActionListener
+{
+     public void actionPerformed(ActionEvent e)
+     {
+          UDStats ob=new UDStats();
+          ob.tf.println(ob.totalbytes);
+          ob.tf.flush();
+          
+          ob.tfs.println();
+          ob.tfs.flush();
+          System.exit(0);
+     }
+}
+ 

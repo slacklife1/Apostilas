@@ -1,0 +1,57 @@
+
+Directions:  
+
+Step 1: Add the below script to the HEAD section of your page containing the form:
+
+Select All
+
+
+The above script references an external .js file. Download "formretain2.js" (by right clicking and selecting "Save As"), and upload to the directory where your webpage resides.
+
+Step 2: To use this script on certain text fields of a form, take a look at the below sample HTML:
+
+<form id="demoform">
+<input id="woot" type="text" value="" /><br/>
+<input id="woot2" type="text" value="" />
+<input type="submit" value="submit" /><br />
+
+<input type="checkbox" id="persistbox" /> Remember my info?
+</form>
+
+<script type="text/javascript">
+var f1=new rememberForm("demoform") //create instance of script referencing form "demoform"
+f1.persistfields("woot", "woot2") //specify the text fields "woot" and "woot2" to be remembered
+f1.addtoggle("persistbox") //specify the checkbox "persistbox" as the " toggle box". (optional).
+</script>
+
+Simply create an instance of the script and use either the ID or name of the form in question (ie: "demoform") as the sole parameter. Then, specify the text fields within this form that should be remembered, where "woot" for example is the ID or name of the text field. Finally, if you've defined a checkbox inside your form as the user "toggle box", specify this checkbox's id/name inside the script. With the above done, the text fields "woot" and "woot2" will be remember if the user checks the checkbox "persistbox" when submitting the form.
+
+If you have more than one form on the same page you wish to add this script to, just repeat the above using each form's unique IDs or names in each case.
+FAQs
+
+How long are the text field values remembered for?
+By default, the script will remember the values for 180 days using cookies, which can be changed by editing the line "this.persistdays=180" inside formretain2.js. If the user unchecks the "toggle box", the remembered values for that particular form is instantly dropped from the cookie.
+
+How do I get the script to remember the text fields values for a form that appears on more than one page, such as a comments form that's added to the footer of all my pages?
+Just make sure the form on all these pages use the same ID or name to identify itself (ie: "demoform"), and is identical, at the very least, the text fields that are to be remembered. This script identifies a common form across pages based on the form's id/name- if they're the same, the script treats it as the same form.
+
+Can I use this script to remember the text values of more than 1 set of forms?
+Absolutely. Simply follow the instructions of Step 2 for each unique form set on your site, each time using that form's unique ID or NAME attribute values as the parameters.
+
+So I can name my form and text fields using either the ID or name attribute right?
+That's right. The ID attribute takes precedence over the name attribute, so if you have both an ID and name attribute defined inside a form field, the script will use the ID attribute to uniquely identify this field.
+
+How can I get the script to just remember the designated text fields automatically, without giving the user a choice via a checkbox? 
+Just remove the checkbox field from your form (ie: "<input type="checkbox" id="persistbox" />"), and then, remove the line "scriptinstance.addtoggle("persistbox") from the code of Step 2.
+
+Can this script be used on non text fields such as a select menu to remember the user selection?
+Unfortunately not with the current version. If there's a demand for this, I can certainly look at expanding the script for this.
+
+And that's it. Oh yes, and if for whatever reason you wish to clear a user's browser cookie of any saved values down the road for a particular form, you can call the internal method:
+
+//scriptinstance.clearcookie()
+f1.clearcookie()
+
+to do so. In the above case, the form referenced by "f1" will have its saved values flushed from the user's cookie as soon as the above line is run. This may be useful if you've made dramatic changes to a form and don't want an legacy values to be misplaced into the wrong text fields.
+
+Enjoy!

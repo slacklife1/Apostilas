@@ -1,0 +1,98 @@
+<html>
+
+<body>
+
+<script type="text/javascript">
+
+/***********************************************
+* IFRAME Scroller script- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+//specify path to your external page:
+var iframesrc="external.htm"
+
+//You may change most attributes of iframe tag below, such as width and height:
+document.write('<iframe id="datamain" src="'+iframesrc+'" width="150px" height="150px" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="1" scrolling="no"></iframe>')
+
+</script>
+
+</body>
+</html>
+<!-- External.htm source-->
+
+<html>
+<body>
+
+<div id="datacontainer" style="position:absolute;left:1px;top:10px;width:100%" onMouseover="scrollspeed=0" onMouseout="scrollspeed=cache">
+
+<!-- ADD YOUR SCROLLER CONTENT INSIDE HERE -->
+
+<b>What's Hot</b></p>
+<p align="left"><strong><font face="Verdana"><small><a href="http://www.dynamicdrive.com/dynamicindex9/encrypter.htm" target="_top">Source
+code encrypter</a>&nbsp;</small></font></strong><br>
+<font face="Verdana" size="2">Scramble the source of any chunk of code using
+this unique script.</font></p>
+<p align="left"><strong><font face="Verdana"><small><a href="http://www.dynamicdrive.com/dynamicindex5/flashlink.htm" target="_top">Flashing
+links</a>&nbsp;</small></font></strong><br>
+<font face="Verdana"><small>Bring attention to special links, by making them
+flash!</small></font></p>
+<p align="left"><small><strong><font face="Verdana"><a href="http://www.dynamicdrive.com/dynamicindex13/roamcursor.htm" target="_top">Roaming
+Cursor</a>&nbsp;</font></strong></small><br>
+<small><font face="Verdana">Display a second, &quot;roaming&quot; cursor on your
+page with this fun animation script.</font></small></p>
+<p align="left"><font face="Verdana"><strong><a href="http://www.dynamicdrive.com/dynamicindex11/animatedtitle.htm" target="_top"><small>Animated
+Document title</small></a><br>
+</strong><small>Animate into view your document's title!</small></font>
+
+<!-- END SCROLLER CONTENT -->
+
+</div>
+
+<script type="text/javascript">
+
+/***********************************************
+* IFRAME Scroller script- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+//Specify speed of scroll. Larger=faster (ie: 5)
+var scrollspeed=cache=2
+
+//Specify intial delay before scroller starts scrolling (in miliseconds):
+var initialdelay=500
+
+function initializeScroller(){
+dataobj=document.all? document.all.datacontainer : document.getElementById("datacontainer")
+dataobj.style.top="5px"
+setTimeout("getdataheight()", initialdelay)
+}
+
+function getdataheight(){
+thelength=dataobj.offsetHeight
+if (thelength==0)
+setTimeout("getdataheight()",10)
+else
+scrollDiv()
+}
+
+function scrollDiv(){
+dataobj.style.top=parseInt(dataobj.style.top)-scrollspeed+"px"
+if (parseInt(dataobj.style.top)<thelength*(-1))
+dataobj.style.top="5px"
+setTimeout("scrollDiv()",40)
+}
+
+if (window.addEventListener)
+window.addEventListener("load", initializeScroller, false)
+else if (window.attachEvent)
+window.attachEvent("onload", initializeScroller)
+else
+window.onload=initializeScroller
+
+</script>
+
+</body>
+</html>

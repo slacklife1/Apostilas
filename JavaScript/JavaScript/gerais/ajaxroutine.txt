@@ -1,0 +1,97 @@
+<head>
+<script type="text/javascript" src="ajaxroutine.js">
+/***********************************************
+* Basic Ajax Routine- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+</script>
+</head>
+
+As you can see, the code references an external JavaScript file, which you'll need to download and copy to your web page directory: ajaxroutine.js (right click, and select "Save As"). Installation is complete.
+Documentation and sample usage
+
+With the routine added to your page, you can now perform Ajax tasks easily, such as get the contents of a text or xml file, return a XML file as a DOM object for easy parsing, or even send information from a form or arbitrary elements on the page to a receiving script such as a PHP script.
+
+The three steps to using this routine to perform Ajax tasks are:
+Install the script by inserting the script in the HEAD section of your page as explained above (doh).
+Define a "callback" function to process the data returned by the Ajax request.
+Invoke the Ajax routine method to make the desired Ajax request.
+
+Ok, all this sounds complicated, but it's actually quite straightforward.
+Performing asynchronous GET requests
+
+Using Ajax, you can perform asynchronous GET requests. Specifically, this means tasks such as: retrieve the source of an external HTML page dynamically, get the contents of a XML file as a DOM object for easy processing, or even get any data selectively returned by a server side script such as PHP that varies depending on the parameters you send to it. Lets see a basic example first:
+
+<head>
+//Step 1: Install the routine script:
+<script src="text/javascript" src="ajaxroutine.js">
+//CREDIT NOTICE GOES HERE
+</script>
+</head>
+
+<body>
+
+<script type="text/javascript">
+//Step 2: Define a "callback" function to process the data returned by the Ajax request:
+function processGetPost(){
+var myajax=ajaxpack.ajaxobj
+var myfiletype=ajaxpack.filetype
+if (myajax.readyState == 4){ //if request of file completed
+if (myajax.status==200 || window.location.href.indexOf("http")==-1){ //if request was successful or running script locally
+if (myfiletype=="txt")
+alert(myajax.responseText)
+else
+alert(myajax.responseXML)
+}
+}
+}
+
+//Step 3: Invoke the Ajax routine method to make the desired Ajax request.
+ajaxpack.getAjaxRequest("example.htm", "", processGetPost, "txt")
+</script>
+
+Run example
+
+As you can see, this simple example just displays the source of "exmple.htm", via the callback function "processGetPost()" that alerts the contents of a file. In Step 3, I've specified the file to get to "example.htm', and that it is a text file (non XML). Don't worry so much about understanding the details yet. Now, using the same callback function as above, lets demonstrate some more complex uses of this routine:
+
+//2) Run example | Source for example.php
+ajaxpack.getAjaxRequest("example.php", "name=George&age=27", processGetPost, "txt")
+
+//3) Run example | Source for examplexml.php
+ajaxpack.getAjaxRequest("examplexml.php", "product=Apple&cost=20", processGetPost, "txt")
+
+//4) Run example
+ajaxpack.getAjaxRequest("examplexml.php", "product=Apple&cost=20", processGetPost, "xml")
+
+//5) Run example | Source for mylist.txt
+ajaxpack.getAjaxRequest(ajaxpack.basedomain+"/mydir/mylist.txt", "", processGetPost, "txt")
+
+As you can see, you can pass parameters to the receiving PHP script to process before returning some data accordingly for the callback function to alert. Notice the subtle difference between examples 3) and 4), which are identical in every respect expect the file type specified in the last parameter ("txt" or "xml'). The former causes the callback function to treat the returned data as regular text, which is why you see the actual source of the xml file alerted. The later causes a DOM XML representation of the XML file to be returned instead, which allows you to then easily parse it using standard DOM methods.
+
+Example 5) is also note worthy, which shows using an absolute URL to reference the external file on your server. "ajaxpack.basedomain" is a variable you can use to return the current root domain of your server, taking into account whether "www" is present or not. For security reasons Ajax requires that the root domain of the page making the Ajax call and the receiving file be identical, down to the "www" portion or lack there of.
+Performing asynchronous POST requests
+
+You can also perform asynchronous POST requests via Ajax, which is arguably the more powerful of the two Ajax behaviours. Basically Ajax POST lets you send data from your page to a receiving server side script asynchronously via the POST method, without reloading the page. The data does NOT have to come from a form- it can be any content or value that you specify. Use Ajax Post instead of Ajax Get to send large amounts of information, or information from a FORM.
+
+Ok, still using the original callback function above, processGetPost(), I'll show you a sample usage of using Ajax POST to send arbitrary information from the page to a PHP script asynchronously. I will just need a few new lines of new code to grab the data from the page I want to be posted and create a post string from it:
+
+<h4 id="relatives">My uncle</h4>
+<form id="myform">
+Enter age: <input type="text" name="agefield" value="56" />
+</form>
+
+<script type="text/javascript">
+
+function createpoststring(){
+var namevalue=document.getElementById("relatives").innerHTML //get value to post from a DIV
+var agevalue=document.getElementById("myform").agefield.value //get value to post from a form field
+var poststr = "name=" + encodeURI(namevalue) + "&age=" + encodeURI(agevalue)
+return poststr
+}
+
+//Step 3: Invoke the Ajax routine method to make the desired Ajax request.
+var poststr=createpoststring() //Get contents to post and create query string first
+ajaxpack.postAjaxRequest("postit.php", poststr, processGetPost, "txt")
+
+</script>

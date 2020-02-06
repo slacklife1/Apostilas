@@ -1,0 +1,40 @@
+/*
+* Java em Rede: Recursos Avançados de Programação
+*
+* Daniel G. Costa
+*
+* Exemplo 4.3
+*
+*/
+
+
+public class Calculadora
+{
+    public double somar (double num1, double num2)
+    {
+        return num1 + num2;
+    }
+    public double subtrair (double num1, double num2)
+    {
+        double resultado = num1 - num2;
+        return resultado;
+    }
+    public double multiplicar (double num1, double num2)
+    {
+        Double resultado = new Double (num1 * num2);
+        return resultado.doubleValue();
+    }
+    public double dividir (double num1, double num2)
+    {
+        num1 /= num2;
+        return num1;
+    }
+    public double quadrado (double num1)
+    {
+        return calcularQuadrado (num1);
+    }
+    private double calcularQuadrado (double num1)
+    {
+        return num1 * num1;
+    }
+}

@@ -1,0 +1,45 @@
+/*
+* Java em Rede: Recursos Avançados de Programação
+*
+* Daniel G. Costa
+*
+* Exemplo 4.6
+*
+*/
+
+
+import java.net.*;
+import java.io.*;
+import java.util.Date;
+
+public class DataHoraWS
+{
+    Date dataHora;
+    public String lerDataHora ()
+    {
+        try
+        {
+ 	    String endereco = "www.java.br";
+            int porta = 6666;
+
+            Socket socket = new Socket (endereco, porta);
+            ObjectInputStream entrada = new ObjectInputStream (socket.getInputStream());
+	    dataHora = (Date) entrada.readObject();
+	    socket.close();
+
+	    return dataHora.toString();
+        }
+        catch (ConnectException exc)
+	{
+            return new String ("Falha na conexão com o servidor.");
+	}
+        catch (UnknownHostException exc)
+	{
+            return new String("Endereço do servidor é inválido ou está indisponível.");
+	}
+        catch (Exception exc)
+	{
+	    return exc.toString();
+	}
+    }
+}

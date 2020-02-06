@@ -1,0 +1,109 @@
+<script type="text/javascript">
+
+/***********************************************
+* Local Time script- © Dynamic Drive (http://www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit http://www.dynamicdrive.com/ for this script and 100s more.
+***********************************************/
+
+var weekdaystxt=["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
+
+function showLocalTime(container, servermode, offsetMinutes, displayversion){
+if (!document.getElementById || !document.getElementById(container)) return
+this.container=document.getElementById(container)
+this.displayversion=displayversion
+var servertimestring=(servermode=="server-php")? '<? print date("F d, Y H:i:s", time())?>' : (servermode=="server-ssi")? '<!--#config timefmt="%B %d, %Y %H:%M:%S"--><!--#echo var="DATE_LOCAL" -->' : '<%= Now() %>'
+this.localtime=this.serverdate=new Date(servertimestring)
+this.localtime.setTime(this.serverdate.getTime()+offsetMinutes*60*1000) //add user offset to server time
+this.updateTime()
+this.updateContainer()
+}
+
+showLocalTime.prototype.updateTime=function(){
+var thisobj=this
+this.localtime.setSeconds(this.localtime.getSeconds()+1)
+setTimeout(function(){thisobj.updateTime()}, 1000) //update time every second
+}
+
+showLocalTime.prototype.updateContainer=function(){
+var thisobj=this
+if (this.displayversion=="long")
+this.container.innerHTML=this.localtime.toLocaleString()
+else{
+var hour=this.localtime.getHours()
+var minutes=this.localtime.getMinutes()
+var seconds=this.localtime.getSeconds()
+var ampm=(hour>=12)? "PM" : "AM"
+var dayofweek=weekdaystxt[this.localtime.getDay()]
+this.container.innerHTML=formatField(hour, 1)+":"+formatField(minutes)+":"+formatField(seconds)+" "+ampm+" ("+dayofweek+")"
+}
+setTimeout(function(){thisobj.updateContainer()}, 1000) //update container every second
+}
+
+function formatField(num, isHour){
+if (typeof isHour!="undefined"){ //if this is the hour field
+var hour=(num>12)? num-12 : num
+return (hour==0)? 12 : hour
+}
+return (num<=9)? "0"+num : num//if this is minute or sec field
+}
+
+</script>
+
+Step 2: Inside your <BODY>, define a DIV or SPAN tag with a unique ID that will contain the local time, then invoke "showLocalTime()" to populate it:
+
+Current Server Time:<span id="timecontainer"></span>
+
+<script type="text/javascript">
+new showLocalTime("timecontainer", "server-ssi", 0, "short")
+</script>
+
+Here's an explanation of the 4 parameters of showLocalTime():
+ContainerID (string): The ID of the DIV or span that will house the local time.
+Servermode (string): Valid values are either "server-php", "server-asp", or "server-ssi", to indicate this page as either of type, PHP, ASP, or SSI.
+LocaltimeoffsetMinutes (integer): The offset in minutes of the local time you wish to display, from the server time. For example, if your server time is currently 9:30 AM and you know the desired local time is 11:30AM, the offset is 120, or 2 hours then.
+Display Format (string): valid values are either "short" or "long". The latter will cause the local date to be displayed along with the time.
+
+For the "servermode" parameter, it must be set to either "server-php", "server-asp", or "server-ssi", depending on whether your page is php, asp, or ssi enabled, respectively. This script will NOT work on 100% static pages, such as plain .html.
+
+That's it. Read on for additional helpful information.
+How to calculate the "LocaltimeoffsetMinutes" value for the desired world location
+
+For the "LocaltimeoffsetMinutes" parameter of showLocalTime(), set it to the offset in minutes between the desired local time and the server time. You can calculate this offset easily, by doing this:
+
+1) Display the server time on your page first, by setting "LocaltimeoffsetMinutes" to 0:
+
+<script type="text/javascript">
+new showLocalTime("timecontainer", "server-ssi", 0, "short")
+</script>
+
+Lets say the time you see on your page is 3:20:45 PM. This is your server's current time.
+
+2) Look up the current time of the location you wish to display, such as New York. Lets say it turns out to be 5:20:54 PM. You now know that "LocaltimeoffsetMinutes" should be 120, or 2 hours separating the two dates. As another example, lets say the desired local time you wish to display is LA, with the current LA time being 2:20:54 PM. The "LocaltimeoffsetMinutes" in this case should be -60 then, or 1 hour separating the two dates, but in the opposite direction (server time is greater than LA time).
+
+3) With "LocaltimeoffsetMinutes" determined, you can now go ahead and display the desired local time. For example:
+
+Current LA Time:<span id="timecontainer"></span>
+
+<script type="text/javascript">
+new showLocalTime("timecontainer", "server-ssi", -60, "short")
+</script>
+
+That wasn't too difficult was it?
+More Information
+
+Before you run off, just a couple more points that are mention worthy:
+
+1) Displaying multiple dates- The object oriented design of this script means you can invoke it multiple times to display multiple local times on the same page! Here's an example:
+
+Current Server Time:<span id="timecontainer"></span><br />
+Current LA Time:<span id="timecontainer2"></span><br />
+Current New York Time:<span id="timecontainer3"></span><br />
+
+<script type="text/javascript">
+new showLocalTime("timecontainer", "server-asp", 0, "short")
+new showLocalTime("timecontainer2", "server-asp", -60, "short")
+new showLocalTime("timecontainer3", "server-asp", 120, "short")
+</script>
+
+1) Watch out for daylight savings time- Depending on where your server is located and/or the local time you wish to display, you may need to adjust "LocaltimeoffsetMinutes" twice yearly to account for Day Light Savings time. If the script is suddenly displaying an incorrect local time, you know that you probably need to re-perform the two steps required to get "LocaltimeoffsetMinutes" again.

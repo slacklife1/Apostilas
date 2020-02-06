@@ -1,0 +1,17 @@
+/*
+* Java em Rede: Recursos Avançados de Programação
+*
+* Daniel G. Costa
+*
+* Exemplo 4.1
+*
+*/
+
+
+public class PrimeiroWS
+{
+    public String getMensagem ()
+    {
+        return "Bem vindo aos Web Services";
+    }
+}

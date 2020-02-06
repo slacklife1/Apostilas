@@ -1,0 +1,115 @@
+Step 1: Insert the below into the <HEAD> section of your page:
+
+Select All
+
+
+The above references an external .js file. Download calendarDateInput.js (by right clicking, and selecting "Save As"), and upload to your webpage directory. It also uses 3 images, which you should download by right clicking, and selecting "Save As":
+
+  
+
+Step 2: Once the above script is added, adding a popup Calendar field to your form is a one step process. Take a look at the below example:
+
+<form>
+
+<script>DateInput('orderdate', true, 'DD-MON-YYYY')</script>
+
+<input type="button" onClick="alert(this.form.orderdate.value)" value="Show date value passed">
+
+</form>
+
+The result is:
+
+ 	 	 	 
+			
+							
+							
+							
+							
+							
+							
+ 
+
+
+As you can see, simply by including function "DateInput()" in the desired place inside your form, the script will auto generate the appropriate HTML and corresponding popup calendar for it. It will also create a hidden field using your designated name (in this case, "orderdate") containing the selected date's value. Click on the form button to look inside this hidden field at any time.
+Additional Information
+
+Below describes function "DateInput()" in detail, which you need to understand to take full advantage of this script:
+
+DateInput(DateName, Required*, DateFormat*, DefaultDate*)
+
+All parameters with a * are optional, and if not passed in a value, the default value is used.
+DateName	STRING - required. Name of the hidden form element to store the selected, formatted date  You do NOT need to create this field manually in your form.	
+Required	BOOLEAN - optional. Default = FALSE (TRUE or FALSE). Determines whether user is required to make a date selection. If set to false (default), an extra "blank" field appears at the top of the month select menu (above January), in which selecting it causes nothing to be passed to the form.	
+DateFormat	STRING- optional. Default is set as a global variable in the script (MM/DD/YYYY on this page). The format of the generated Date value. It can be one of the following:
+YYYYMMDD 
+YYYY-MM-DD * 
+YYYY-DD-MM * 
+YYYY/MM/DD * 
+YYYY/DD/MM * 
+YYYY-DD-MON *   ** 
+YYYY-MON-DD *   ** 
+MM-DD-YYYY * 
+DD-MM-YYYY * 
+MM/DD/YYYY * 
+DD/MM/YYYY * 
+DD-MON-YYYY *   ** 
+MON-DD-YYYY *   ** 
+*   2-digit year can be used instead of 4-digit year
+** 3-character month name abbreviation can also be specified as MMM.	
+DefaultDate	STRING- optional. The default date displayed in the drop down menus. If none is specified, today's date is used.	
+
+With that in mind, here are a few examples:
+
+ 	 	 	 
+			
+							
+							
+							
+							
+							
+							
+ Code: <script>DateInput('birthdate')</script> 
+
+ 	 	 	 
+			
+							
+							
+							
+							
+							
+							
+ Code: <script>DateInput('orderdate', true)</script> 
+
+ 	 	 	 
+			
+							
+							
+							
+							
+							
+							
+ Code: <script>DateInput('todaydate', true, 'DD-MON-YYYY')</script> 
+ 	 	 	 
+			
+							
+							
+							
+							
+							
+							
+ Code: <script>DateInput('todaydate', true, 'DD-MON-YYYY', '28-JUN-2003')</script> 
+
+-Customizable variables
+
+Inside the .js file you downloaded, there are also a few variables at the top you can customize:
+Default date format, if none is supplied in the call to the "DateInput" function 
+Number of seconds to wait before the calendar will disappear 
+The year at which to send 2-digit years to the 21st century 
+Text to display in the 1st month list item when the date isn't required.
+Calendar attributes 
+Font size and style 
+Background color 
+Cell dimensions 
+Top row background color 
+Highlighted day background color 
+URL to calendar images.

@@ -1,0 +1,80 @@
+<html>
+<head>
+
+<style type="text/css">
+.dropcontent{
+width: 300px;
+height: 140px;
+border: 1px solid black;
+background-color: #FFECC6;
+display:block;
+}
+</style>
+
+<script type="text/javascript">
+
+/*
+Combo-Box Viewer script- Created by and © Dynamicdrive.com
+Visit http://www.dynamicdrive.com/ for this script and more
+This notice MUST stay intact for legal use
+*/
+
+if (document.getElementById){
+document.write('<style type="text/css">\n')
+document.write('.dropcontent{display:none;}\n')
+document.write('</style>\n')
+}
+
+function contractall(){
+if (document.getElementById){
+var inc=0
+while (document.getElementById("dropmsg"+inc)){
+document.getElementById("dropmsg"+inc).style.display="none"
+inc++
+}
+}
+}
+
+function expandone(){
+if (document.getElementById){
+var selectedItem=document.dropmsgform.dropmsgoption.selectedIndex
+contractall()
+document.getElementById("dropmsg"+selectedItem).style.display="block"
+}
+}
+
+if (window.addEventListener)
+window.addEventListener("load", expandone, false)
+else if (window.attachEvent)
+window.attachEvent("onload", expandone)
+
+</script>
+
+</head>
+
+<body>
+
+<form name="dropmsgform">
+<select name="dropmsgoption" size="1" style="width:300" onChange="expandone()">
+<option selected>What is JavaScript?</option>
+<option>Difference betwen Java and JavaScript</option>
+<option>What is DHTML?</option>
+</select>
+<br>
+
+<div id="dropmsg0" class="dropcontent">
+JavaScript is a scripting language originally developed by Netscape to add interactivity and power to web documents. It is purely client side, and runs completely on the client's browser and computer.
+</div>
+
+<div id="dropmsg1" class="dropcontent">
+Java is completely different from JavaScript- it's more powerful, more complex, and unfortunately, a lot harder to master. It belongs in the same league as C, C++, and other more complex languages. Java programs need to be compiled before they can run, while JavaScript do not.
+</div>
+
+<div id="dropmsg2" class="dropcontent">
+DHTML is the embodiment of a combination of technologies- JavaScript, CSS, and HTML. Through them a new level of interactivity is possible for the end user experience.
+</div>
+
+</form>
+
+</body>
+</html>
